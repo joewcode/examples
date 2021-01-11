@@ -1,67 +1,67 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>WS Client</title>
-	<meta charset="utf-8">
+    <title>WS Client</title>
+    <meta charset="utf-8">
 </head>
 <body>
-	<form action="#">
-		<input type="text" id="textbox" />
-		<button type="submit">Send</button>
-	</form>
-	<div id="canvas"></div>
-	<script>
-	// Set variables 
-	const token = '53557fb79dfa43e9cdec2ef551b05c1ba2cbd36135ff774cc225ed276c8f4281';
-	let socket = null;
-	let reconectCount = 0;
-	const reconectMaxCount = 5;
-	
-	// Socket create and listen
-	function socketConnect() {
-		reconectCount++
-		socket = new WebSocket('ws://localhost:9090/'+token);
-		['onmessage', 'onclose', 'onerror', 'onopen', 'onconnect'].forEach((eventType) => {
-			socket[eventType] = (event) => {
-				console.info('Socket Event type: ', eventType)
-				if (eventType === 'onclose') {
-					// Reconnect after 1 second
-					if (reconectCount < reconectMaxCount)
-						setTimeout(() => socketConnect(), 1000)
-				} else if (eventType === 'onconnect') {
-					console.log('Connection established')
-					reconectCount = 0
-				}else if (eventType === 'onmessage') {
-					// ...add message to html
-					let p = document.createElement('br')
-					document.getElementById('canvas').append(event.data, p)
-				} 
-				else console.log(event)
-			}
-		})
-	}
-	
-	// Create test cookies
-	function createCookies() {
-		const expires = new Date(2052089041 * 1000).toUTCString()
-		document.cookie = 'user=Joe; path=/; expires='+expires
-		document.cookie = 'level=305; path=/; expires='+expires
-	}
-	
-	// Listen submit event
-	document.querySelector('form').onsubmit = (event) => {
-		event.preventDefault()
-		const textbox = document.getElementById('textbox')
-		const mess = textbox.value
-		if (mess === '') return;
-		textbox.value = ''
-		socket.send(mess)
-		console.log('Send to server: ', mess)
-	}
-	
-	// --- Run ---
-	// createCookies()
-	socketConnect()
-	</script>
+    <form action="#">
+        <input type="text" id="textbox" />
+        <button type="submit">Send</button>
+    </form>
+    <div id="canvas"></div>
+    <script>
+    // Set variables 
+    const token = '53557fb79dfa43e9cdec2ef551b05c1ba2cbd36135ff774cc225ed276c8f4281';
+    let socket = null;
+    let reconectCount = 0;
+    const reconectMaxCount = 5;
+    
+    // Socket create and listen
+    function socketConnect() {
+        reconectCount++
+        socket = new WebSocket('ws://localhost:9090/'+token);
+        ['onmessage', 'onclose', 'onerror', 'onopen', 'onconnect'].forEach((eventType) => {
+            socket[eventType] = (event) => {
+                console.info('Socket Event type: ', eventType)
+                if (eventType === 'onclose') {
+                    // Reconnect after 1 second
+                    if (reconectCount < reconectMaxCount)
+                        setTimeout(() => socketConnect(), 1000)
+                } else if (eventType === 'onconnect') {
+                    console.log('Connection established')
+                    reconectCount = 0
+                } else if (eventType === 'onmessage') {
+                    // ...add message to html
+                    let p = document.createElement('br')
+                    document.getElementById('canvas').append(event.data, p)
+                } 
+                else console.log(event)
+            }
+        })
+    }
+    
+    // Create test cookies
+    function createCookies() {
+        const expires = new Date(2052089041 * 1000).toUTCString()
+        document.cookie = 'user=Joe; path=/; expires='+expires
+        document.cookie = 'level=305; path=/; expires='+expires
+    }
+    
+    // Listen submit event
+    document.querySelector('form').onsubmit = (event) => {
+        event.preventDefault()
+        const textbox = document.getElementById('textbox')
+        const mess = textbox.value
+        if (mess === '') return;
+        textbox.value = ''
+        socket.send(mess)
+        console.log('Send to server: ', mess)
+    }
+    
+    // --- Run ---
+    // createCookies()
+    socketConnect()
+    </script>
 </body> 
 </html>
