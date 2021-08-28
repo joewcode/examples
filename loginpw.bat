@@ -18,8 +18,5 @@ if "%choice%"=="3" (start elementclient.exe startbypatcher console:1 noflymodel 
 if "%choice%"=="4" (start elementclient.exe startbypatcher console:1 noflymodel nofollowpetmodel user:login4 pwd:%pass%)
 if "%choice%"=="5" (start elementclient.exe startbypatcher console:1 noflymodel nofollowpetmodel user:login5 pwd:123456)
 @Echo.
-@Echo "Error script..."
-@Echo.
-@Echo.
 goto accoounts
 pause >nul
